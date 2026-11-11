@@ -3,22 +3,24 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 1. 頁面標題與說明
-st.title("⚡ 未知電池內部特徵解密實驗室")
-st.write("歡迎來到互動實驗室！請於左側側邊欄調整實驗參數，設定完成後點擊 **「開始執行實驗」** 按鈕來輸出分析圖表。")
+st.title("🔋線上虛擬實驗室")
+with st.chat_message("assistant", avatar="🤖"):
+    st.write("量測小幫手將會為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊 **「執行量測」** 。")
 
 # 2. 側邊欄控制項（統一控制兩部分的參數）
-st.sidebar.header("🎛️ 實驗參數設定")
+st.sidebar.header("🎛️ 參數設定")
 battery_type = st.sidebar.selectbox("電池選擇", ["A", "B"])
-start = st.sidebar.number_input("外接電阻起始值 start (Ω)", value=1.0)
-end = st.sidebar.number_input("外接電阻結束值 end (Ω)", value=800.0)
-sample_size = st.sidebar.slider("取樣數 (個)", min_value=20, max_value=400, value=230, step=10)
+st.write("外接電阻選用範圍")
+start = st.sidebar.number_input("起始值(Ω)")
+end = st.sidebar.number_input("結束值(Ω)")
+sample_size = st.sidebar.slider("取樣數 (個)", min_value=50, max_value=800, value=500, step=10)
 
 st.sidebar.markdown("---")
-run_button = st.sidebar.button("🚀 開始執行實驗", type="primary")
+run_button = st.sidebar.button("執行量測", type="primary")
 
 # 3. 只有當學生點擊按鈕後，才會進行計算並顯示兩個圖表
 if run_button:
-    with st.spinner('正在進行物理量測與分析中...'):
+    with st.spinner('正在進行量測與分析中...'):
         # 內部隱藏的真實參數
         if battery_type == "A":
             global_emf, global_r = 618, 565
@@ -32,8 +34,9 @@ if run_button:
         P_values = I_values * VR_values
 
         # ==================== 第一部分：V-I 圖 ====================
-        st.subheader("🔍 第一部分：V-I 測量與內部特徵解密")
-        st.write("透過改變外接電阻，觀察端電壓與電流的線性關係，並從中推算電動勢與內電阻。")
+        st.subheader("🔍 第一部分：未知電池內部解密")
+        with st.chat_message("assistant", avatar="🦾"):
+            st.write("分析小幫手已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式")
 
         # 線性擬合
         p_fit = np.polyfit(I_values, VR_values, 1)
@@ -55,11 +58,14 @@ if run_button:
 
         st.pyplot(fig1)
 
+        st.write("當外接電阻多大時，這顆電池有最大功率?")
+        
         st.markdown("---")
 
         # ==================== 第二部分：P-R 功率曲線圖 ====================
         st.subheader("⚡ 第二部分：功率曲線與阻抗匹配")
-        st.write("尋找當外接電阻多大時該電池有最大功率，探討阻抗匹配現象。")
+        with st.chat_message("assistant", avatar="🦾"):
+            st.write("分析小幫手將使用量測出的電壓與電流計算出功率，以外接電阻值為橫軸，畫出 P-R 圖，並標示出最大功率點。")
 
         # 找出最大功率點
         max_idx = np.argmax(P_values)
@@ -86,7 +92,7 @@ if run_button:
         ax2.grid(True, linestyle='--', alpha=0.6)
 
         st.pyplot(fig2)
-        st.success("🎉 實驗分析完成！請結合上下兩張圖表回答學習單上的問題吧！")
+        st.success("請結合上下兩張圖表回答學習單上的問題吧！")
 
 else:
-    st.info("👈 請在左側調整好參數後，點擊 **「🚀 開始執行實驗」** 按鈕來同時展開 V-I 與 P-R 分析！")
+    st.info("量測小幫手將會為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊 **「執行量測」** ")
