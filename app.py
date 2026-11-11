@@ -10,7 +10,7 @@ with st.chat_message("assistant", avatar="🤖"):
 # 2. 側邊欄控制項（統一控制兩部分的參數）
 st.sidebar.header("🎛️ 參數設定")
 battery_type = st.sidebar.selectbox("電池選擇", ["A", "B"])
-st.write("外接電阻選用範圍")
+st.sidebar("外接電阻選用範圍")
 start = st.sidebar.number_input("起始值(Ω)")
 end = st.sidebar.number_input("結束值(Ω)")
 sample_size = st.sidebar.slider("取樣數 (個)", min_value=50, max_value=800, value=500, step=10)
@@ -93,6 +93,3 @@ if run_button:
 
         st.pyplot(fig2)
         st.success("請結合上下兩張圖表回答學習單上的問題吧！")
-
-else:
-    st.info("量測小幫手將會為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊 **「執行量測」** ")
