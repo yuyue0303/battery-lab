@@ -8,11 +8,9 @@ with st.chat_message("assistant", avatar="🤖"):
     st.write("量測小幫手將會為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊 **「執行量測」** 。")
 
 # 2. 側邊欄控制項（統一控制兩部分的參數）
-# 例如在側邊欄顯示放大或縮小的文字
-st.sidebar.markdown('<span style="font-size: 16px;">這是自訂大小的文字</span>', unsafe_allow_html=True)
 st.sidebar.header("🎛️ 參數設定")
 battery_type = st.sidebar.selectbox("電池選擇", ["A", "B"])
-st.sidebar.markdown("外接電阻選用範圍")
+st.sidebar.markdown('<span style="font-size: 12px;">外接電阻選用範圍</span>', unsafe_allow_html=True)
 start = st.sidebar.number_input("起始值(Ω)")
 end = st.sidebar.number_input("結束值(Ω)")
 sample_size = st.sidebar.slider("取樣數 (個)", min_value=50, max_value=800, value=500, step=10)
