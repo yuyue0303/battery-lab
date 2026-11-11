@@ -9,7 +9,7 @@ with st.chat_message("assistant", avatar="🤖"):
 
 # 2. 側邊欄控制項（統一控制兩部分的參數）
 st.sidebar.header("🎛️ 參數設定")
-battery_type = st.sidebar.selectbox("**電池選擇**", ["A", "B"])
+battery_type = st.sidebar.selectbox("**電池類型**", ["A", "B"])
 st.sidebar.markdown('<span style="font-size: 14px;">**外接電阻選用範圍**</span>', unsafe_allow_html=True)
 start = st.sidebar.number_input("起始值(Ω)")
 end = st.sidebar.number_input("結束值(Ω)")
