@@ -4,8 +4,8 @@ import numpy as np
 
 # 1. 頁面標題與說明
 st.title("🔋線上虛擬實驗室")
-with st.chat_message("assistant", avatar="🤖"):
-    st.write("量測小幫手將會為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊 **「執行量測」** 。")
+with st.container(border=True):
+    st.markdown("🤖 **【量測小幫手】** 將為您測量電壓及電流，請於左側側邊欄調整實驗參數...")
 
 # 2. 側邊欄控制項（統一控制兩部分的參數）
 st.sidebar.header("🎛️ 參數設定")
@@ -35,8 +35,8 @@ if run_button:
 
         # ==================== 第一部分：V-I 圖 ====================
         st.subheader("🔍 第一部分：未知電池內部解密")
-        with st.chat_message("assistant", avatar="🦾"):
-            st.write("分析小幫手已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式")
+        with st.container(border=True):
+            st.markdown("🦾 **【分析小幫手】** 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式...")
 
         # 線性擬合
         p_fit = np.polyfit(I_values, VR_values, 1)
@@ -64,9 +64,9 @@ if run_button:
 
         # ==================== 第二部分：P-R 功率曲線圖 ====================
         st.subheader("⚡ 第二部分：功率曲線與阻抗匹配")
-        with st.chat_message("assistant", avatar="🦾"):
-            st.write("分析小幫手將使用量測出的電壓與電流計算出功率，以外接電阻值為橫軸，畫出 P-R 圖，並標示出最大功率點。")
-
+        with st.container(border=True):
+            st.markdown("🦾 **【分析小幫手】** 我使用了量測出的電壓與電流計算出功率，以外接電阻值為橫軸，畫出 P-R 圖，並標示出最大功率點...")
+            
         # 找出最大功率點
         max_idx = np.argmax(P_values)
         max_P = P_values[max_idx]
