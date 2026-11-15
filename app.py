@@ -46,7 +46,7 @@ elif page == "➊ 探究未知電池":
                 global_emf, global_r = 105, 75
             if battery_type == "B":
                 global_emf, global_r = 818, 365
-            else:
+            if battery_type == "C":
                 global_emf, global_r = 70, 37
 
             R_values = np.linspace(start, end, int(sample_size))
