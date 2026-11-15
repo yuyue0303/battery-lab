@@ -12,7 +12,6 @@ page = st.sidebar.radio(
     ["探究未知電池🔋", "串並聯與最大功率⚡"],
     label_visibility="collapsed"  # 隱藏原本的「選擇頁面」文字，讓畫面更清爽
 )
-
 st.sidebar.markdown("---")
 
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
@@ -27,7 +26,6 @@ if page == "探究未知電池🔋":
     start = st.sidebar.number_input("起始值(Ω)", step=10)
     end = st.sidebar.number_input("結束值(Ω)", step=10)
     sample_size = st.sidebar.slider("**取樣數**", min_value=50, max_value=600, value=300, step=5)
-
     st.sidebar.markdown("---")
     run_p1 = st.sidebar.button("執行量測", type="primary")
 
