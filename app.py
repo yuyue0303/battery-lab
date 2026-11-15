@@ -62,16 +62,15 @@ elif page == "➊ 探究未知電池":
             P_values = I_values * VR_values
 
             # ==================== 第一部分：V-I 圖 ====================
-    st.subheader("(一) 內部解密🔍")
-    st.markdown(
-        """
-        <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
-        💻 <b>分析小幫手</b> 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+            st.subheader("(一) 內部解密🔍")
+            st.markdown(
+                """
+                <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+                💻 <b>分析小幫手</b> 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
             # 線性擬合
             p_fit = np.polyfit(I_values, VR_values, 1)
             slope_w = p_fit[0]
