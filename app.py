@@ -26,17 +26,11 @@ if page == "🏠首頁":
     
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
 elif page == "➊ 探究未知電池":
-    
     st.title("探究未知電池🔋")
-
-    if st.sidebar.button("執行量測", type="primary"):
-        st.session_state.measured_p1 = True
-    
-    if not st.session_state.measured_p1:
-        st.markdown(
-            """
-            <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
-            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
+    st.markdown(
+        """
+        <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+        🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
         </div>
         """,
             unsafe_allow_html=True
@@ -68,20 +62,15 @@ elif page == "➊ 探究未知電池":
             P_values = I_values * VR_values
 
             # ==================== 第一部分：V-I 圖 ====================
-            if "measured_p1" not in st.session_state:
-                st.session_state.measured_p1 = False
-                
-            if st.session_state.measured_p1:
-                with st.spinner('正在進行單顆電池測量與分析...'):
-                    st.subheader("(一) 內部解密🔍")
-                    st.markdown(
-                        """
-                        <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
-                        💻 <b>分析小幫手</b> 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
+    st.subheader("(一) 內部解密🔍")
+    st.markdown(
+        """
+        <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+        💻 <b>分析小幫手</b> 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
             # 線性擬合
             p_fit = np.polyfit(I_values, VR_values, 1)
