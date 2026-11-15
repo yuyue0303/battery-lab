@@ -26,8 +26,6 @@ if page == "🏠首頁":
     
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
 elif page == "➊ 探究未知電池":
-    if "measured_p1" not in st.session_state:
-        st.session_state.measured_p1 = False
     
     st.title("探究未知電池🔋")
 
@@ -70,6 +68,9 @@ elif page == "➊ 探究未知電池":
             P_values = I_values * VR_values
 
             # ==================== 第一部分：V-I 圖 ====================
+            if "measured_p1" not in st.session_state:
+                st.session_state.measured_p1 = False
+                
             if st.session_state.measured_p1:
                 with st.spinner('正在進行單顆電池測量與分析...'):
                     st.subheader("(一) 內部解密🔍")
