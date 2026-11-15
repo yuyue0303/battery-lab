@@ -3,43 +3,39 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # 設定頁面標題與寬度
-st.set_page_config(page_title="電池物理與系統最佳化實驗室", layout="wide")
+st.set_page_config(page_title="線上虛擬實驗室", layout="wide")
 
 # ==================== 側邊欄導覽：頁面切換 ====================
 st.sidebar.markdown("### 🧭 實驗室導覽")
 page = st.sidebar.radio(
-    "選擇實驗頁面", 
-    ["🔬 第一頁：V-I 與 P-R 基礎探究", "⚡ 第二頁：電池串並聯與系統最佳化"]
+    "選擇頁面", 
+    ["探究未知電池🔋", "串並聯與最大功率⚡"]
 )
-
 st.sidebar.markdown("---")
 
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
-if page == "🔬 第一頁：V-I 與 P-R 基礎探究":
-    st.title("🔋⚡ 單顆電池特性與阻抗匹配實驗室")
+if page == "探究未知電池🔋":
+    st.title("探究未知電池🔋")
+    st.info("🦾 **量測小幫手** 將為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊「執行量測」。")
 
-    # 🤖 量測幫手
-    col_m1, col_m2 = st.columns([1, 18])
-    with col_m1:
-        st.markdown("### 🤖")
-    with col_m2:
-        st.markdown("**【量測小幫手】** 歡迎來到第一頁！請在左側設定好單顆電池的參數與外接電阻範圍，點擊執行來探索 V-I 線性關係與功率極值。")
+    # 側邊欄控制項（統一控制兩部分的參數）
+    st.sidebar.header("🎛️ 參數設定")
+    battery_type = st.sidebar.selectbox("**電池類型**", ["A", "B", "C"])
+    st.sidebar.markdown('<span style="font-size: 14px;">**外接電阻選用範圍**</span>', unsafe_allow_html=True)
+    start = st.sidebar.number_input("起始值(Ω)", step=10)
+    end = st.sidebar.number_input("結束值(Ω)", step=10)
+    sample_size = st.sidebar.slider("**取樣數**", min_value=50, max_value=600, value=300, step=5)
 
-    # 第一頁的側邊欄控制項
-    st.sidebar.header("🎛️ 第一頁實驗參數")
-    battery_type = st.sidebar.selectbox("電池型號選擇", ["A", "B"])
+    st.sidebar.markdown("---")
+    run_p1 = st.sidebar.button("執行量測", type="primary")
 
-    st.sidebar.markdown("### 🔌 外接電阻選用範圍")
-    start = st.sidebar.number_input("起始值 (Ω)", value=1.0, key="p1_start")
-    end = st.sidebar.number_input("結束值 (Ω)", value=800.0, key="p1_end")
-    sample_size = st.sidebar.slider("取樣數 (個)", min_value=20, max_value=500, value=200, step=10, key="p1_sample")
-
-    run_p1 = st.sidebar.button("🚀 執行第一頁實驗", type="primary")
 
     if run_p1:
-        with st.spinner('正在進行單顆電池測量與分析...'):
+        with st.spinner('正在進行測量與分析...'):
             if battery_type == "A":
-                global_emf, global_r = 618, 565
+                global_emf, global_r = 105, 75
+            if battery_type == "B":
+                global_emf, global_r = 818, 365
             else:
                 global_emf, global_r = 70, 37
 
@@ -48,51 +44,67 @@ if page == "🔬 第一頁：V-I 與 P-R 基礎探究":
             VR_values = global_emf - I_values * global_r
             P_values = I_values * VR_values
 
-            # 第一部分：V-I 圖
-            st.subheader("🔍 第一部分：V-I 測量與內部特徵解密")
-            p_fit = np.polyfit(I_values, VR_values, 1)
-            trendline = p_fit[0] * I_values + p_fit[1]
+            # ==================== 第一部分：V-I 圖 ====================
+            st.subheader("🔍 內部解密")
+            st.success("💻 **分析小幫手** 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。")
 
-            fig1, ax1 = plt.subplots(figsize=(10, 4))
-            ax1.scatter(I_values, VR_values, label='Measured Data', color='dodgerblue', s=20)
-            ax1.plot(I_values, trendline, label=f'Trendline: y = {p_fit[0]:.1f}x + {p_fit[1]:.1f}', color='darkorange', linewidth=1.5)
-            ax1.set_xlabel("Current I (A)")
-            ax1.set_ylabel("Voltage V (V)")
-            ax1.legend(loc='upper right')
+            # 線性擬合
+            p_fit = np.polyfit(I_values, VR_values, 1)
+            slope_w = p_fit[0]
+            intercept_b = p_fit[1]
+            trendline = slope_w * I_values + intercept_b
+
+            # 畫 V-I 圖
+            fig1, ax1 = plt.subplots(figsize=(10, 4.5))
+            ax1.scatter(I_values, VR_values, label='Measured Data (I,V)', color='dodgerblue', s=20)
+            trend_label = f'Trendline: y = {slope_w:.1f}x + {intercept_b:.1f}'
+            ax1.plot(I_values, trendline, label=trend_label, color='darkorange', linewidth=1)
+
+            ax1.set_title(f"V-I Analysis: battery {battery_type}", fontsize=11, fontweight='bold')
+            ax1.set_xlabel("Current I (A)", fontsize=10)
+            ax1.set_ylabel("Voltage V (V)", fontsize=10)
+            ax1.legend(loc='upper right', fontsize=10)
             ax1.grid(True, linestyle='--', alpha=0.6)
+
             st.pyplot(fig1)
 
+            st.write("💡當外接電阻多大時，這顆電池有最大功率?")
+        
             st.markdown("---")
 
-            # 第二部分：P-R 圖
-            st.subheader("⚡ 第二部分：功率曲線與阻抗匹配 (R = r)")
+             # ==================== 第二部分：P-R 功率曲線圖 ====================
+            st.subheader("📈 功率曲線與阻抗匹配")
+            st.success("💻 **分析小幫手** 使用了量測出的電壓與電流計算出功率，以外接電阻值為橫軸，畫出 P-R 圖，並標示出最大功率點...")
+            
+            # 找出最大功率點
             max_idx = np.argmax(P_values)
             max_P = P_values[max_idx]
             max_R = R_values[max_idx]
 
-            fig2, ax2 = plt.subplots(figsize=(10, 4))
-            ax2.set_ylim(0, max_P * 1.15)
+            # 畫 P-R 圖
+            fig2, ax2 = plt.subplots(figsize=(10, 4.5))
+            ax2.set_ylim(0, max_P * 1.15)  # 讓 Y 軸頂端自動多留 15% 的空間
             ax2.scatter(R_values, P_values, label='Data (R,P)', color='dodgerblue', s=20)
-            ax2.scatter(max_R, max_P, color='crimson', s=30, zorder=5, label='Max Power')
-            ax2.annotate(f"({max_R:.1f}Ω, {max_P:.1f}W)", xy=(max_R, max_P), xytext=(-35, 15), textcoords='offset points', fontsize=10, color='crimson', fontweight='bold')
-            ax2.set_xlabel("External Resistance R (Ω)")
-            ax2.set_ylabel("Power P (W)")
+            ax2.scatter(max_R, max_P, color='crimson', s=20, zorder=5, label=f'Max Power')
+        
+            # 標註點（已調整偏移量避免撞框）
+            ax2.annotate(f"({max_R:.1f}, {max_P:.1f})",
+                         xy=(max_R, max_P),
+                         xytext=(-35, 10),
+                         textcoords='offset points',
+                         fontsize=10, color='crimson')
+                     
+            ax2.set_title(f"P-R Analysis: battery {battery_type}", fontsize=11, fontweight='bold')
+            ax2.set_xlabel("External Resistance R (Ω)", fontsize=10)
+            ax2.set_ylabel("Power P (W)", fontsize=10)
             ax2.legend()
             ax2.grid(True, linestyle='--', alpha=0.6)
+
             st.pyplot(fig2)
-
-            # 🔬 分析小幫手
-            col_a1, col_a2 = st.columns([1, 18])
-            with col_a1:
-                st.markdown("### 📊")
-            with col_a2:
-                st.markdown(f"**【分析小幫手】** 分析完成！當外接電阻 $R = {max_R:.1f}\,\Omega$ 時達到最大功率。這剛好等於電池的內電阻 $r$ 喔！準備好時，可以切換到**第二頁**挑戰串並聯架構設計。")
-    else:
-        st.info("👈 請在左側設定好參數，並點擊 **「🚀 執行第一頁實驗」** 來檢視圖表。")
-
+            st.success("請結合上下兩張圖表回答學習單上的問題吧！")
 
 # ==================== 第二頁：電池串並聯與系統最佳化 ====================
-elif page == "⚡ 第二頁：電池串並聯與系統最佳化":
+elif page == "串並聯與最大功率⚡":
     st.title("🔋⚡ 電池陣列架構與系統最佳化實驗室")
 
     # 🤖 陣列量測幫手
