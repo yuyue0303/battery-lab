@@ -55,6 +55,7 @@ elif page == "➊ 探究未知電池":
             """,
             unsafe_allow_html=True
         )
+        
         st.info("👈 請在左側設定好參數，並點擊 **「執行量測」** 來檢視圖表。")
 
     # 當點擊執行量測後 (measured_p1 == True)，顯示分析結果與圖表
