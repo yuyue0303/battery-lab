@@ -27,7 +27,14 @@ if page == "🏠首頁":
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
 elif page == "➊ 探究未知電池":
     st.title("探究未知電池🔋")
-    st.info("🦾 **量測小幫手** 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。")
+    st.markdown(
+    """
+    <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+        🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
+    </div>
+    """,
+    unsafe_allow_html=True
+    )
 
     # 側邊欄控制項（統一控制兩部分的參數）
     st.sidebar.header("🎛️ 參數設定")
@@ -56,7 +63,14 @@ elif page == "➊ 探究未知電池":
 
             # ==================== 第一部分：V-I 圖 ====================
             st.subheader("(一) 內部解密🔍")
-            st.success("💻 **分析小幫手** 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。")
+            st.markdown(
+    """
+    <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+        💻 <b>分析小幫手</b> 已將電壓與電流量測結果畫成圖表，輸出一張 V-I 圖，包含擬合方程式。
+    </div>
+    """,
+    unsafe_allow_html=True
+            )
 
             # 線性擬合
             p_fit = np.polyfit(I_values, VR_values, 1)
