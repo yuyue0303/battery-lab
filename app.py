@@ -6,11 +6,13 @@ import numpy as np
 st.set_page_config(page_title="線上虛擬實驗室", layout="wide")
 
 # ==================== 側邊欄導覽：頁面切換 ====================
-st.sidebar.markdown("### 🧭 實驗室導覽")
+st.sidebar.markdown('<h3 style="font-size: 20px; margin-bottom: 0px;">🧭 實驗室導覽</h3>', unsafe_allow_html=True)
 page = st.sidebar.radio(
     "選擇頁面", 
-    ["探究未知電池🔋", "串並聯與最大功率⚡"]
+    ["探究未知電池🔋", "串並聯與最大功率⚡"],
+    label_visibility="collapsed"  # 隱藏原本的「選擇頁面」文字，讓畫面更清爽
 )
+
 st.sidebar.markdown("---")
 
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
