@@ -27,33 +27,44 @@ if page == "🏠首頁":
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
 elif page == "➊ 探究未知電池":
     st.title("探究未知電池🔋")
-    st.markdown(
-        """
-        <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
-        🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
-        </div>
-        """,
-            unsafe_allow_html=True
-        )
+
+    # 初始化第一頁的量測狀態紀錄
+    if "measured_p1" not in st.session_state:
+        st.session_state.measured_p1 = False
 
     # 側邊欄控制項（統一控制兩部分的參數）
     st.sidebar.header("🎛️ 參數設定")
     battery_type = st.sidebar.selectbox("**電池類型**", ["A", "B", "C"])
     st.sidebar.markdown('<span style="font-size: 14px;">**外接電阻選用範圍**</span>', unsafe_allow_html=True)
-    start = st.sidebar.number_input("起始值(Ω)", step=10)
-    end = st.sidebar.number_input("結束值(Ω)", step=10)
-    sample_size = st.sidebar.slider("**取樣數**", min_value=50, max_value=800, value=500, step=5)
+    start = st.sidebar.number_input("起始值(Ω)", step=10, key="p1_start")
+    end = st.sidebar.number_input("結束值(Ω)", step=10, key="p1_end")
+    sample_size = st.sidebar.slider("**取樣數**", min_value=50, max_value=800, value=500, step=5, key="p1_sample")
     st.sidebar.markdown("---")
-    run_p1 = st.sidebar.button("執行量測", type="primary")
+    
+    # 點擊按鈕後將狀態改為 True
+    if st.sidebar.button("執行量測", type="primary"):
+        st.session_state.measured_p1 = True
 
+    # 只有在「尚未點擊執行量測」時，才顯示這個灰色的量測小幫手框框
+    if not st.session_state.measured_p1:
+        st.markdown(
+            """
+            <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
+            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！<br>請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        st.info("👈 請在左側設定好參數，並點擊 **「執行量測」** 來檢視圖表。")
 
-    if run_p1:
+    # 當點擊執行量測後 (measured_p1 == True)，顯示分析結果與圖表
+    if st.session_state.measured_p1:
         with st.spinner('正在進行測量與分析...'):
             if battery_type == "A":
                 global_emf, global_r = 105, 75
-            if battery_type == "B":
+            elif battery_type == "B":
                 global_emf, global_r = 818, 365
-            if battery_type == "C":
+            elif battery_type == "C":
                 global_emf, global_r = 70, 37
 
             R_values = np.linspace(start, end, int(sample_size))
@@ -110,7 +121,7 @@ elif page == "➊ 探究未知電池":
             ax2.scatter(R_values, P_values, label='Data (R,P)', color='dodgerblue', s=20)
             ax2.scatter(max_R, max_P, color='crimson', s=20, zorder=5, label=f'Max Power')
         
-            # 標註點（已調整偏移量避免撞框）
+            # 標註點
             ax2.annotate(f"({max_R:.1f}, {max_P:.1f})",
                          xy=(max_R, max_P),
                          xytext=(-35, 10),
@@ -204,9 +215,9 @@ elif page == "➋ 串並聯與最大功率":
                 st.markdown(f"""
                 **【分析小幫手報告】** 
                 * 當前陣列組合：**{ns} 串 {np_parallel} 並** 
-                st.markdown(f"* 計算得出的等效內電阻 $r_{eq} = $ <b>{eq_r:.2f} Ω</b>", unsafe_allow_html=True)
+                * 計算得出的等效內電阻 $r_{eq} = $ <b>{eq_r:.2f} Ω</b>
                 * **思考點**：當前架構的 $r_{eq}$ 是否完美匹配你的外接負載？試著微調左側的 $n_s$ 和 $n_p$，看看能不能把最大功率往上推升！
-                """)
+                """, unsafe_allow_html=True)
     else:
         st.info("👈 請在左側設定好串並聯個數，並點擊 **「🚀 執行陣列實驗與分析」** 來展開探究！")
 
