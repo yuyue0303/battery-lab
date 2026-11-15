@@ -7,15 +7,25 @@ st.set_page_config(page_title="線上虛擬實驗室", layout="wide")
 
 # ==================== 側邊欄導覽：頁面切換 ====================
 st.sidebar.markdown('<h3 style="font-size: 20px; margin-bottom: 0px;">🧭 實驗室導覽</h3>', unsafe_allow_html=True)
+
+# 在選項最前面多加一個「請選擇」的選項
 page = st.sidebar.radio(
     "選擇頁面", 
-    ["探究未知電池🔋", "串並聯與最大功率⚡"],
-    label_visibility="collapsed"  # 隱藏原本的「選擇頁面」文字，讓畫面更清爽
+    ["🏠首頁", "➊ 探究未知電池🔋", "➋ 串並聯與最大功率⚡"],
+    label_visibility="collapsed"
 )
 st.sidebar.markdown("---")
 
+if page == "🏠首頁":
+    # 預設首頁畫面
+    st.title("歡迎來到愉悅的線上虛擬實驗室!")
+    st.markdown("---")
+    
+    # 你指定的提示訊息
+    st.info("👋 **請於左側側邊欄選擇頁面**")
+    
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
-if page == "探究未知電池🔋":
+elif page == "➊ 探究未知電池🔋":
     st.title("探究未知電池🔋")
     st.info("🦾 **量測小幫手** 將為您測量電壓及電流，請於左側側邊欄調整實驗參數，設定完成後點擊「執行量測」。")
 
@@ -104,8 +114,8 @@ if page == "探究未知電池🔋":
             st.success("請結合上下兩張圖表回答學習單上的問題吧！")
 
 # ==================== 第二頁：電池串並聯與系統最佳化 ====================
-elif page == "串並聯與最大功率⚡":
-    st.title("🔋⚡ 電池陣列架構與系統最佳化實驗室")
+elif page == "➋ 串並聯與最大功率⚡":
+    st.title("串並聯與最大功率⚡")
 
     # 🤖 陣列量測幫手
     col_m1, col_m2 = st.columns([1, 18])
