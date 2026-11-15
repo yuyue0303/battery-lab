@@ -27,12 +27,12 @@ if page == "🏠首頁":
 # ==================== 第一頁：V-I 與 P-R 基礎探究 ====================
 elif page == "➊ 探究未知電池":
     if "measured_p1" not in st.session_state:
-    st.session_state.measured_p1 = False
+        st.session_state.measured_p1 = False
     
     st.title("探究未知電池🔋")
 
     if st.sidebar.button("執行量測", type="primary"):
-    st.session_state.measured_p1 = True
+        st.session_state.measured_p1 = True
     
     if not st.session_state.measured_p1:
         st.markdown(
