@@ -50,7 +50,7 @@ elif page == "➊ 探究未知電池":
         st.markdown(
             """
             <div style="padding: 12px 16px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px;">
-            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！<br>請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
+            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
             </div>
             """,
             unsafe_allow_html=True
