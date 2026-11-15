@@ -50,12 +50,11 @@ elif page == "➊ 探究未知電池":
         st.markdown(
             """
             <div style="padding: 14px 18px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px; margin-bottom: 20px;">
-            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！
+            🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
             </div>
             """,
             unsafe_allow_html=True
         )
-        st.info("👈 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。")
 
     # 當點擊執行量測後 (measured_p1 == True)，顯示分析結果與圖表
     if st.session_state.measured_p1:
@@ -140,13 +139,15 @@ elif page == "➊ 探究未知電池":
 # ==================== 第二頁：電池串並聯與系統最佳化 ====================
 elif page == "➋ 串並聯與最大功率":
     st.title("串並聯與最大功率⚡")
-
-    # 🤖 陣列量測幫手
-    col_m1, col_m2 = st.columns([1, 18])
-    with col_m1:
-        st.markdown("### 🦾")
-    with col_m2:
-        st.markdown("**【陣列量測幫手】** 歡迎來到進階工程挑戰！請在左側調整**串聯個數 ($n_s$)** 與 **並聯個數 ($n_p$)**，找出能夠完美匹配外接負載、榨出最大功率的組合！")
+    st.markdown("歡迎來到進階挑戰！利用有限的電池數量進行**串聯** 與 **並聯**，嘗試找出能得到最大功率的組合！")
+    st.markdown(
+        """
+        <div style="padding: 14px 18px; background-color: #f1f3f5; border-left: 5px solid #adb5bd; border-radius: 4px; color: #343a40; margin-top: 16px; margin-bottom: 20px;">
+        🦾 <b>量測小幫手</b> 將為您測量電壓及電流！ 請於左側側邊欄設定實驗參數，設定完成後點擊「執行量測」。
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # 第二頁的側邊欄控制項
     st.sidebar.header("🎛️ 第二頁陣列參數設定")
@@ -156,7 +157,7 @@ elif page == "➋ 串並聯與最大功率":
     ns = st.sidebar.number_input("串聯個數 ($n_s$)", min_value=1, max_value=20, value=4, step=1)
     np_parallel = st.sidebar.number_input("並聯分支數 ($n_p$)", min_value=1, max_value=20, value=2, step=1)
 
-    st.sidebar.markdown("### 🔌 外接電阻選用範圍")
+    st.sidebar.markdown("### 外接電阻選用範圍")
     start_p2 = st.sidebar.number_input("起始值 (Ω)", value=1.0, key="p2_start")
     end_p2 = st.sidebar.number_input("結束值 (Ω)", value=500.0, key="p2_end")
     sample_size_p2 = st.sidebar.slider("取樣數 (個)", min_value=20, max_value=500, value=200, step=10, key="p2_sample")
